@@ -32,9 +32,11 @@ input, textarea, nav {
 	padding: 0;
 }
 .container {
+	margin-top: 10px;
+	margin-bottom: 10px;
 	max-width: 1170px!important;
 	width: 100%!important;
-	margin: 0 auto;
+	/* margin: 0 auto; */
 	padding: 0 15px;
 }
 /*nav*/
@@ -44,7 +46,7 @@ input, textarea, nav {
 	z-index: 999;
 }
 .nav__content {
-	margin-top: 50px;
+	margin-top: 0px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -116,7 +118,7 @@ input, textarea, nav {
 }
 
 .items__text {
-	margin-bottom: 50px;
+	margin-bottom: 0px;
 }
 
 .enter__items input {
@@ -164,3 +166,11 @@ input, textarea, nav {
 	width: auto;
 }
 
+
+.section {
+}
+
+.name {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}

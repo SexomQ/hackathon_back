@@ -18,25 +18,18 @@
   <body>
 
     <nav class="nav">
-      <div class="container">
         <div class="nav__content">
           <div class="nav__logo">
             <a href="#">Croissant</a>
           </div>
         </div>
-      </div>
     </nav>
 
-    {% block content %}{% endblock %}
-
-    <footer>
+    <section>
       <div class="container">
-        <div class="footer">
-          <div class="footer__text">
-            All rights reserved.
-          </div>
+        {% block content %}{% endblock %}
 
-        </div>
       </div>
-    </footer>
+    </section>
+
   </body>

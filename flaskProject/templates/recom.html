@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="recom">
+  <div class="recom__items">
+    <div class="items__text">
+      You must try...
+    </div>
+
+    <h2 class="name" style="font-size:xx-large">{{recipe['Name']}}</h2>
+
+    {% if recipe["Images"] != None %}
+    <div class="items__recom">
+      <div class="image__wrapper">
+        <img src={{recipe["Images"]}}>
+      </div>
+    </div>
+    {% endif %}
+
+    <a href={{"http://127.0.0.1:5000/recommendation/?liked=" + liked +','+ recipe['RecipeId'] + "&disliked=" + disliked}}><button >
+      I like it </button></a>
+    <a href={{"http://127.0.0.1:5000/recommendation/?liked=" + liked + "&disliked=" + disliked + ',' + recipe['RecipeId']}}><button >
+      I don't like it </button></a>
+    <a href={{"http://127.0.0.1:5000/recommendation/?liked=" + liked + "&disliked=" + disliked + ',' + recipe['RecipeId']}}><button >
+      I don't know </button></a>
+
+  </div>
+</div>
+
+{% endblock %}

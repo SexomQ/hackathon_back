@@ -108,18 +108,18 @@ def get_recommendation():
 
 
         recipe = Recipe(Calories=Calories, CarbohydrateContent=CarbohydrateContent,
-                    CholesterolContent=CholesterolContent, FatContent=FatContent, FiberContent=FiberContent,
-                    Images=Images, ProteinContent=ProteinContent, RecipeInstructions=RecipeInstructions,
-                    RecipeServings=RecipeServings, SaturatedFatContent=SaturatedFatContent,
-                    SodiumContent=SodiumContent, SugarContent=SugarContent,
-                    TotalTime=TotalTime, id=id, name=name, ingredients=ingredients)
+                        CholesterolContent=CholesterolContent, FatContent=FatContent, FiberContent=FiberContent,
+                        Images=Images, ProteinContent=ProteinContent, RecipeInstructions=RecipeInstructions,
+                        RecipeServings=RecipeServings, SaturatedFatContent=SaturatedFatContent,
+                        SodiumContent=SodiumContent, SugarContent=SugarContent,
+                        TotalTime=TotalTime, id=id, name=name, ingredients=ingredients)
         db.session.add(recipe)
         db.session.commit()
 
         return {
-                   "id": id,
-                   "message": "Success"
-               }, 200
+            "id": id,
+            "message": "Success"
+        }, 200
 
 @app.route('/', methods=["GET"])
 @cross_origin()
@@ -140,14 +140,48 @@ def recommendation():
     disliked = []
     if ll:
         liked = [int(n) for n in ll.split(',')]
+    if dl and dl != ['']:
+        disliked = [int(n) for n in dl.split(',')]
+
+    if request.method == "GET":
+        recom = recommend(recipes, reviews, liked, disliked)
+        recipe = recipes[recipes['RecipeId'] == recom].to_dict('records')[0]
+        recipe['RecipeId'] = str(recipe['RecipeId'])
+        likeds = ','.join([str(i) for i in liked])
+
+        if disliked != ['']:
+            dislikeds = ','.join([str(i) for i in disliked])
+        else:
+            dislikeds = ''
+
+        if recipe['Images'] == 'character(0)':
+            recipe['Images'] = None
+        elif recipe['Images'][0] != '"':
+            recipe['Images'] = recipe['Images'][2:].split('"')[1]
+        else:
+            recipe['Images'] = recipe['Images'][1:-1]
+
+        return render_template('recom.html',
+                               recipe=recipe,
+                               liked=likeds,
+                               disliked=dislikeds)
+
+@app.route('/api/', methods=["GET"])
+@cross_origin()
+def api():
+    ll = request.args.get('liked', None)
+    dl = request.args.get('disliked', None)
+    liked = []
+    disliked = []
+    if ll:
+        liked = [int(n) for n in ll.split(',')]
     if dl:
         disliked = [int(n) for n in dl.split(',')]
 
     if request.method == "GET":
         print(liked, disliked)
         recom = recommend(recipes, reviews, liked, disliked)
-        return render_template('enter.html', recipes=recipes[recipes['RecipeId'] == recom])
-
+        return json.loads(recipes[recipes['RecipeId'] == recom].to_json(orient="records"))
 
 @app.route('/signin', methods=["GET"])
 @cross_origin()
