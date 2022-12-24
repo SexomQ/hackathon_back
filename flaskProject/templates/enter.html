@@ -9,13 +9,21 @@
 		</div>
 		<form action="recom.html">
 			<label for="fname">First Recipe you would like:</label><br>
-			<input type="text" id="fname" name="fname"><br>
+			<input list="dl" type="text" id="fname" name="fname"><br>
 
 			<label for="fname">Second Recipe you would like:</label><br>
-			<input type="text" id="fname" name="fname"><br>
+			<input list="dl" type="text" id="fname" name="fname"><br>
 
 			<label for="fname">Third Recipe you would like:</label><br>
-			<input type="text" id="fname" name="fname"><br>
+			<input list="dl" type="text" id="fname" name="fname"><br>
+
+			<datalist id="dl">
+				<option value="Chocolate">
+				<option value="Coconut">
+				<option value="Mint">
+				<option value="Strawberry">
+				<option value="Vanilla">
+			</datalist>
 
 
 			<a href="http://127.0.0.1:5000/recommendation/?liked=892,192,193&disliked=123">
