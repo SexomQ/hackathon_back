@@ -1,7 +1,8 @@
 import os
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from algorithm import *
+import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database_2.db'
@@ -9,8 +10,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-df = pd.read_csv('short_recipes.csv')
-liked = []
+recipes = pd.read_csv('./data/recipes10000.csv')
+reviews = pd.read_csv('./data/reviews10000.csv', usecols=["AuthorId", "RecipeId", "Rating"])
+liked = [192]
 disliked = []
 
 class User(db.Model):
@@ -116,11 +118,16 @@ def get_recommendation():
                    "message": "Success"
                }, 200
 
-@app.route('/recommendation/<int:index>/', methods=["GET"])
-def recommendation(index):
+@app.route('/recommendation/<int:index>/<int:likedf>/', methods=["GET"])
+def recommendation(index, likedf):
+    if likedf:
+        liked.append(index)
+    else:
+        disliked.append(index)
     if request.method == "GET":
-        return similar_dishes_json(df, similar_dishes(index, df, 'transformer.pkl'))
-
+        recom = recommend(recipes, reviews, liked, disliked)
+        print(liked, disliked)
+        return json.loads(recipes[recipes['RecipeId'] == recom].to_json(orient="records"))
 
 
 @app.route('/signin', methods=["GET"])
