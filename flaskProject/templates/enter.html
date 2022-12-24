@@ -7,7 +7,7 @@
 		<div class="items__text">
 			Here is some text.
 		</div>
-		<form action="recom.html">
+		<form action="{{ url_for('recommendation')}}" method="post">
 			<label for="fname">First Recipe you would like:</label><br>
 			<input list="dl" type="text" id="fname" name="fname"><br>
 
@@ -18,17 +18,16 @@
 			<input list="dl" type="text" id="fname" name="fname"><br>
 
 			<datalist id="dl">
-				<option value="Chocolate">
-				<option value="Coconut">
-				<option value="Mint">
-				<option value="Strawberry">
-				<option value="Vanilla">
+				{% for l,v in options %}
+					<option label="{{l}}" value="{{v}}">
+				{% endfor %}
 			</datalist>
 
+			<input type="submit" value="Continue">
 
-			<a href="http://127.0.0.1:5000/recommendation/?liked=892,192,193&disliked=123">
-				<input value="Continue">
-				<a >
+			<!-- <a href="http://127.0.0.1:5000/recommendation/?liked=892,192,193&disliked=123"> -->
+			<!-- 	<input value="Continue"> -->
+			<!-- 	<a > -->
 		</form>
 	</div>
 </div>

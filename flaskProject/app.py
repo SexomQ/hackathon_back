@@ -129,42 +129,47 @@ def index():
 @app.route('/enter', methods=["GET"])
 @cross_origin()
 def enter():
-    return render_template('enter.html')
+    opts = zip(recipes["Name"].to_list(), recipes["RecipeId"].to_list())
+    print(opts)
+    return render_template('enter.html', options=opts)
 
-@app.route('/recommendation/', methods=["GET"])
+@app.route('/recommendation/', methods=["GET", "POST"])
 @cross_origin()
 def recommendation():
-    ll = request.args.get('liked', None)
-    dl = request.args.get('disliked', None)
-    liked = []
-    disliked = []
-    if ll:
-        liked = [int(n) for n in ll.split(',')]
-    if dl and dl != ['']:
-        disliked = [int(n) for n in dl.split(',')]
+    if request.method == 'POST':
+        liked = [int(i) for i in request.form.getlist('fname')]
+        disliked = []
+    elif request.method == "GET":
+        ll = request.args.get('liked', None)
+        dl = request.args.get('disliked', None)
+        liked = []
+        disliked = []
+        if ll:
+            liked = [int(n) for n in ll.split(',')]
+        if dl and dl != ['']:
+            disliked = [int(n) for n in dl.split(',')]
 
-    if request.method == "GET":
-        recom = recommend(recipes, reviews, liked, disliked)
-        recipe = recipes[recipes['RecipeId'] == recom].to_dict('records')[0]
-        recipe['RecipeId'] = str(recipe['RecipeId'])
-        likeds = ','.join([str(i) for i in liked])
+    recom = recommend(recipes, reviews, liked, disliked)
+    recipe = recipes[recipes['RecipeId'] == recom].to_dict('records')[0]
+    recipe['RecipeId'] = str(recipe['RecipeId'])
+    likeds = ','.join([str(i) for i in liked])
 
-        if disliked != ['']:
-            dislikeds = ','.join([str(i) for i in disliked])
-        else:
-            dislikeds = ''
+    if disliked != ['']:
+        dislikeds = ','.join([str(i) for i in disliked])
+    else:
+        dislikeds = ''
 
-        if recipe['Images'] == 'character(0)':
-            recipe['Images'] = None
-        elif recipe['Images'][0] != '"':
-            recipe['Images'] = recipe['Images'][2:].split('"')[1]
-        else:
-            recipe['Images'] = recipe['Images'][1:-1]
+    if recipe['Images'] == 'character(0)':
+        recipe['Images'] = None
+    elif recipe['Images'][0] != '"':
+        recipe['Images'] = recipe['Images'][2:].split('"')[1]
+    else:
+        recipe['Images'] = recipe['Images'][1:-1]
 
-        return render_template('recom.html',
-                               recipe=recipe,
-                               liked=likeds,
-                               disliked=dislikeds)
+    return render_template('recom.html',
+                           recipe=recipe,
+                           liked=likeds,
+                           disliked=dislikeds)
 
 @app.route('/api/', methods=["GET"])
 @cross_origin()
