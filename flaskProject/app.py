@@ -3,10 +3,13 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from algorithm import *
 import json
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database_2.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 db = SQLAlchemy(app)
 
@@ -51,6 +54,7 @@ def create_tables():
 
 
 @app.route('/register', methods=["POST"])
+@cross_origin()
 def hello_world():  # put application's code here
     firstname = request.json["firstname"]
     lastname = request.json["lastname"]
@@ -70,8 +74,8 @@ def hello_world():  # put application's code here
     }, 200
 
 
-
 @app.route('/profile/<int:index>/', methods=["GET"])
+@cross_origin()
 def profile(index):
     if request.method == "GET":
 
@@ -84,6 +88,7 @@ def profile(index):
         }
 
 @app.route('/recommendation', methods=["POST"])
+@cross_origin()
 def get_recommendation():
     if request.method == "POST":
         Calories = request.json["Calories"]
@@ -119,6 +124,7 @@ def get_recommendation():
                }, 200
 
 @app.route('/recommendation/<int:index>/<int:likedf>/', methods=["GET"])
+@cross_origin()
 def recommendation(index, likedf):
     if likedf == 1:
         liked.append(index)
@@ -132,6 +138,7 @@ def recommendation(index, likedf):
 
 
 @app.route('/signin', methods=["GET"])
+@cross_origin()
 def signin():
     email = request.json["email"]
     password = request.json["password"]
