@@ -120,10 +120,11 @@ def get_recommendation():
 
 @app.route('/recommendation/<int:index>/<int:likedf>/', methods=["GET"])
 def recommendation(index, likedf):
-    if likedf:
+    if likedf == 1:
         liked.append(index)
-    else:
+    elif likedf == 0:
         disliked.append(index)
+
     if request.method == "GET":
         recom = recommend(recipes, reviews, liked, disliked)
         print(liked, disliked)
