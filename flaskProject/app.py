@@ -15,8 +15,6 @@ db = SQLAlchemy(app)
 
 recipes = pd.read_csv('./data/recipes10000.csv')
 reviews = pd.read_csv('./data/reviews10000.csv', usecols=["AuthorId", "RecipeId", "Rating"])
-liked = [192]
-disliked = []
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -123,17 +121,21 @@ def get_recommendation():
                    "message": "Success"
                }, 200
 
-@app.route('/recommendation/<int:index>/<int:likedf>/', methods=["GET"])
+@app.route('/recommendation/', methods=["GET"])
 @cross_origin()
-def recommendation(index, likedf):
-    if likedf == 1:
-        liked.append(index)
-    elif likedf == 0:
-        disliked.append(index)
+def recommendation():
+    ll = request.args.get('liked', None)
+    dl = request.args.get('disliked', None)
+    liked = []
+    disliked = []
+    if ll:
+        liked = [int(n) for n in ll.split(',')]
+    if dl:
+        disliked = [int(n) for n in dl.split(',')]
 
     if request.method == "GET":
-        recom = recommend(recipes, reviews, liked, disliked)
         print(liked, disliked)
+        recom = recommend(recipes, reviews, liked, disliked)
         return json.loads(recipes[recipes['RecipeId'] == recom].to_json(orient="records"))
 
 
