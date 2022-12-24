@@ -54,7 +54,7 @@ def intersection(lst1, lst2):
     return [value for value in lst1 if value in lst2]
 
 def recommend(recipes, reviews, liked, disliked):
-    recoms1 = recom1(liked[-1], recipes, 'transformer.pkl')
+    recoms1 = [i for i in recom1(liked[-1], recipes, 'transformer.pkl') if i not in liked+disliked]
     recoms2 = recom2(recipes, reviews, liked, disliked)
     return (intersection(recoms1, recoms2) + recoms1)[0]
 
