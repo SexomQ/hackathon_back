@@ -146,7 +146,9 @@ def recommendation():
         disliked = []
         if ll:
             liked = [int(n) for n in ll.split(',')]
-        if dl and dl != ['']:
+        if dl:
+            if dl[0] == ',':
+                dl = dl[1:]
             disliked = [int(n) for n in dl.split(',')]
 
     recom = recommend(recipes, reviews, liked, disliked)
