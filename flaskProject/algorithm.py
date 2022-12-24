@@ -22,7 +22,7 @@ def recom1(recipeId, df, model_name):
 
     df3=pd.concat([df[['Name', 'RecipeId']].reset_index(),recommender_df.reset_index()],axis=1)
 
-    return df3[[recipeId, 'Name', 'RecipeId']].sort_values(by=recipeId).head(6)[1:].iloc[:, 3].values.tolist()[-1:]
+    return df3[[recipeId, 'Name', 'RecipeId']].sort_values(by=recipeId).head(6)[1:].iloc[:, 3].values.tolist()[:1]
 
 def recom2(recipes, reviews, liked, disliked):
     import pandas as pd
