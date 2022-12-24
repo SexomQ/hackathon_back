@@ -103,3 +103,64 @@ input, textarea, nav {
 	align-items: center;
 	justify-content: space-around;
 }
+
+.enter {
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
+
+.enter__items {
+	margin: 0 auto;
+}
+
+.items__text {
+	margin-bottom: 50px;
+}
+
+.enter__items input {
+	margin-bottom: 30px;
+	padding: 5px 2px;
+}
+
+.enter__items label{
+	margin-bottom: 10px;
+}
+
+.submit {
+	width: 200px;
+	height: 50px;
+}
+
+.recom {
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
+.recom__items {
+	margin: 0 auto;
+}
+.items__recom {
+	margin-bottom: 50px;
+}
+.items__recom h1 {
+	font-size: 26px;
+}
+.image__wrapper {
+	width: 350px;
+	height: 350px;
+	position: relative;
+	overflow: hidden;
+	margin: 0 auto;
+}
+.image__wrapper img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%, -50%, 0);
+	height: 100%;
+	width: auto;
+}
+
