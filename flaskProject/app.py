@@ -121,6 +121,16 @@ def get_recommendation():
                    "message": "Success"
                }, 200
 
+@app.route('/', methods=["GET"])
+@cross_origin()
+def index():
+    return render_template('index.html')
+
+@app.route('/enter', methods=["GET"])
+@cross_origin()
+def enter():
+    return render_template('enter.html')
+
 @app.route('/recommendation/', methods=["GET"])
 @cross_origin()
 def recommendation():
@@ -136,7 +146,7 @@ def recommendation():
     if request.method == "GET":
         print(liked, disliked)
         recom = recommend(recipes, reviews, liked, disliked)
-        return json.loads(recipes[recipes['RecipeId'] == recom].to_json(orient="records"))
+        return render_template('enter.html', recipes=recipes[recipes['RecipeId'] == recom])
 
 
 @app.route('/signin', methods=["GET"])
